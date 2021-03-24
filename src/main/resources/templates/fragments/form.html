@@ -1,0 +1,85 @@
+
+
+<form id="input-form" action="#" th:action="@{/minify}" th:object="${FormSettingsInput}" method="post">
+
+
+
+    <div class="btn-group">
+        <input type="radio" class="btn-check" th:field="*{setting}" th:value="${minify}" id="setting-select-0" autocomplete="off">
+        <label class="btn btn-outline-primary" for="setting-select-0" th:text="${minify}"></label>
+
+        <input type="radio" class="btn-check" th:field="*{setting}" th:value="${beautify}" id="setting-select-1" autocomplete="off">
+        <label class="btn btn-outline-primary" for="setting-select-1" th:text="${beautify}"></label>
+
+        <input type="radio" class="btn-check" th:field="*{setting}" th:value="${xml}" id="setting-select-2" autocomplete="off">
+        <label class="btn btn-outline-primary" for="setting-select-2" th:text="${xml}"></label>
+        <input type="radio" class="btn-check" th:field="*{setting}" th:value="${base64}" id="setting-select-3" autocomplete="off">
+        <label class="btn btn-outline-primary" for="setting-select-3" th:text="${base64}"></label>
+    </div>
+
+
+
+    <div id="minify-form-options" class="form-options minify-form-options" th:styleappend="${FormSettingsInput.setting == minify} ? 'display:block' : 'display:none'">
+
+    </div>
+
+    <div id="beautify-form-options" class="form-options beautify-form-options xml-form-options"
+         th:styleappend="${FormSettingsInput.setting == beautify OR FormSettingsInput.setting == xml} ? 'display:block' : 'display:none'">
+        <div class="input-group">
+            <label for="beautify-indent-select" class="input-group-text" th:text="${indentation_label}"></label>
+            <select class="form-select" id="beautify-indent-select" th:field="*{indentation}">
+                <option th:value="'0'" th:text="${indentation_option_0}"></option>
+                <option th:value="'1'" th:text="${indentation_option_1}"></option>
+                <option th:value="'2'" th:text="${indentation_option_2}"></option>
+                <option th:value="'3'" th:text="${indentation_option_3}"></option>
+                <option th:value="'4'" th:text="${indentation_option_4}"></option>
+                <option th:value="'5'" th:text="${indentation_option_5}"></option>
+                <option th:value="'6'" th:text="${indentation_option_6}"></option>
+            </select>
+        </div>
+    </div>
+
+
+    <div id="xml-form-options" class="form-options xml-form-options" th:styleappend="${FormSettingsInput.setting == xml} ? 'display:block' : 'display:none'">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="inlineRadio3"
+                   th:field="*{xmlToJson}" th:value="${json_to_xml}" >
+            <label class="form-check-label" for="inlineRadio3" th:text="${json_to_xml}"></label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="inlineRadio4"
+                   th:field="*{xmlToJson}" th:value="${xml_to_json}" >
+            <label class="form-check-label" for="inlineRadio4" th:text="${xml_to_json}"></label>
+        </div>
+
+    </div>
+
+
+    <div id="base64-form-options" class="form-options base64-form-options" th:styleappend="${FormSettingsInput.setting == base64} ? 'display:block' : 'display:none'">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="inlineRadio1"
+                   th:field="*{encode}" th:value="${encode}" >
+            <label class="form-check-label" for="inlineRadio1" th:text="${encode}"></label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="inlineRadio2"
+                   th:field="*{encode}" th:value="${decode}" >
+            <label class="form-check-label" for="inlineRadio2" th:text="${decode}"></label>
+        </div>
+
+
+    </div>
+
+</hr>
+
+    <div class="form-group">
+        <label class="form-label" for="input-area" th:text="${input_label}" ></label>
+        <textarea class="form-control textarea" id="input-area" th:field="*{content}" autofocus th:placeholder="${input_area_placeholder}" ></textarea>
+    </div>
+
+    <div class="submit-button-container">
+        <button type="submit" id="submit-button" name="submit" th:text="${submit}" class="btn btn-primary"></button>
+    </div>
+</form>

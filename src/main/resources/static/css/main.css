@@ -1,0 +1,54 @@
+
+.topbar {
+    background-color: #4aa4ff;
+}
+
+.alert {
+    margin-bottom: 0;
+}
+
+body {
+  //padding-top: 5rem;
+  background-color: #eeeeee;
+}
+
+.submit-button-container{
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    margin: 1rem 0;
+}
+
+.textarea {
+    height: 316px;
+    min-height: 316px;
+    overflow-y: scroll;
+    max-width: 100%;
+    min-width: 100%;
+    padding: 1rem;
+}
+
+.form-options {
+    margin: 1rem 0;
+}
+
+.row {
+    margin: 1rem;
+}
+
+.output-area-container{
+    margin-top: 5rem;
+    margin-bottom: 10rem;
+}
+
+.footer {
+    padding: 2.5rem 0;
+    text-align: center;
+    background-color: #424242;
+    border-top: 0px solid #795548;
+    font-size: 1.5rem;
+}
+
+#polydus-copyright {
+    width: 100%;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Code Formatter</title>
+
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<div th:if="${exception}">
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Exception!</strong> Your JSON code is invalid.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+</div>
+
+<div th:replace="fragments/header :: header"></div>
+
+
+
+
+<main role="main" class="container">
+
+
+<div class="row">
+    <h1 th:text="${title}"></h1>
+</div>
+
+<div th:replace="fragments/form :: form"></div>
+
+<hr/>
+
+<div class="output-area-container">
+    <textarea id="output-area" placeholder="output" class="textarea" th:text="${output}" wrap="off" readonly="true"></textarea>
+</div>
+
+
+
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript" th:src="@{webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js"></script>
+<script th:inline="javascript">
+var output = [[${output} != null ? ${output} : '']];
+var obfuscate = [[${FormSettingsInput.setting == obfuscate}]];
+</script>
+
+<script type="text/javascript" th:src="@{js/main.js}"></script>
+</body>
+</html>
