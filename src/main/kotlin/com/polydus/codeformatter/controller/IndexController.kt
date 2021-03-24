@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets
 @Controller
 class IndexController {
 
-    @Value("classpath:string/en/strings_index.json")
+    @Value("classpath:/string/en/strings_index.json")
     var resourceFile: Resource? = null
 
     @Autowired
