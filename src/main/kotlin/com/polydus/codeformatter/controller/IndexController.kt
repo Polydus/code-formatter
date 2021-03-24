@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
+import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 
@@ -24,17 +25,24 @@ import java.nio.charset.StandardCharsets
 @Controller
 class IndexController {
 
+    //@Autowired
+    //lateinit var resourceLoader: ResourceLoader//? = null
+
     @Value("classpath:/string/en/strings_index.json")
-    var resourceFile: Resource? = null
+    lateinit var resourceFile: Resource// = resourceLoader.getResource("classpath:/string/en/strings_index.json")//? = null
 
     @Autowired
-    var jsonFormatter: JsonFormatter? = null
+    lateinit var jsonFormatter: JsonFormatter//? = null
 
-    private var strings: HashMap<String, String>? = null
+    var strings: HashMap<String, String>? = null
 
     private var output: String? = null
     private var exception = false
     private var formSettingsInput = FormSettingsInput()
+
+    init {
+        //resourceFile = resourceLoader.getResource("classpath:/string/en/strings_index.json")//? = null
+    }
 
     @GetMapping("/")
     fun main(model: Model): String {
