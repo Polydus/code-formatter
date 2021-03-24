@@ -19,6 +19,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import java.io.File
 import java.nio.charset.StandardCharsets
 
 
@@ -47,9 +48,12 @@ class IndexController {
     @GetMapping("/")
     fun main(model: Model): String {
         if(strings == null){
-            val file = resourceFile?.file?.readText(StandardCharsets.UTF_8) ?: ""
+            val input = resourceFile?.inputStream//?.readT
+           // val a = input.readAllBytes()
+            val string = String(input.readAllBytes())
             val json = Json {  }
-            strings = json.decodeFromString<HashMap<String, String>>(file)
+            strings = json.decodeFromString<HashMap<String, String>>(string)
+            println()
         }
 
         strings?.apply {
