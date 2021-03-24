@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	maven
 	id("org.springframework.boot") version "2.4.4"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.4.31"
@@ -11,6 +12,7 @@ plugins {
 group = "com.polydus"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
 
 repositories {
 	mavenCentral()
