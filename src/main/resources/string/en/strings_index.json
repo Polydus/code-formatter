@@ -1,21 +1,38 @@
 {
   "":"",
 
+  "exception_title":"Exception!",
+  "exception_message_invalid_json":"Your JSON input is invalid.",
+  "exception_message_invalid_xml":"Your XML input is invalid.",
+  "exception_message_invalid_base64":"Your Base64 input is invalid.",
+
   "title": "Code Formatter",
+
+  "formatter": "JSON Formatter",
+  "xml": "XML",
+  "encode_decode": "Encode/Decode",
+
+  "string": "String",
+  "base64": "Base64",
+  "binary": "Binary",
+  "hex": "Hexadecimal",
 
   "minify": "Minify",
   "beautify": "Beautify",
-  "xml": "XML",
-  "base64": "Base64",
-
-  "encode": "Encode",
-  "decode": "Decode",
-
 
   "xml_to_json": "XML to JSON",
   "json_to_xml": "JSON to XML",
 
+  "xml_root_name": "Root element name",
+  "json_array_name": "Array elements name",
+
+  "formatter_label": "Format",
+  "json_to_xml_label": "Type",
   "indentation_label": "Indent with",
+  "encode_type_label": "Convert from",
+  "decode_type_label": "Convert to",
+  "input_label": "Input",
+  "output_label": "Output",
 
   "indentation_option_0": "None",
   "indentation_option_1": "1 space",
@@ -25,9 +42,6 @@
   "indentation_option_5": "1 tab",
   "indentation_option_6": "2 tabs",
 
-
-
-  "input_label": "Json input:",
   "input_area_placeholder": "Paste your code here",
 
   "submit": "Submit!"

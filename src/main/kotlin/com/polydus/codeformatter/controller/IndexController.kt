@@ -1,72 +1,58 @@
 package com.polydus.codeformatter.controller
 
-import com.fasterxml.jackson.core.util.DefaultIndenter
-import com.fasterxml.jackson.core.util.DefaultIndenter.SYS_LF
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.polydus.codeformatter.format.JsonFormatter
+import com.polydus.codeformatter.format.Encode
+import com.polydus.codeformatter.format.Formatter
 import com.polydus.codeformatter.model.FormSettingsInput
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
-import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import java.io.File
-import java.nio.charset.StandardCharsets
 
 
 @Controller
 class IndexController {
 
-    //@Autowired
-    //lateinit var resourceLoader: ResourceLoader//? = null
-
     @Value("classpath:/string/en/strings_index.json")
     lateinit var resourceFile: Resource// = resourceLoader.getResource("classpath:/string/en/strings_index.json")//? = null
 
     @Autowired
-    lateinit var jsonFormatter: JsonFormatter//? = null
+    lateinit var formatter: Formatter//? = null
 
-    var strings: HashMap<String, String>? = null
+    private var strings: HashMap<String, String>? = null
 
     private var output: String? = null
-    private var exception = false
+   // private var exception = false
     private var formSettingsInput = FormSettingsInput()
 
-    init {
-        //resourceFile = resourceLoader.getResource("classpath:/string/en/strings_index.json")//? = null
-    }
+    private val json = Json {  }
 
     @GetMapping("/")
     fun main(model: Model): String {
         if(strings == null){
-            val input = resourceFile?.inputStream//?.readT
-           // val a = input.readAllBytes()
+            val input = resourceFile.inputStream
             val string = String(input.readAllBytes())
-            val json = Json {  }
             strings = json.decodeFromString<HashMap<String, String>>(string)
-            println()
         }
-
-        strings?.apply {
-            for(s in this){
-                addString(model, s.key)
-            }
-        }
+        addAllStrings(model)
 
         if(formSettingsInput.setting == null){
-            formSettingsInput.setting = getString("minify")
-            formSettingsInput.encode = getString("encode")
+            formSettingsInput.setting = getString("formatter")
+            formSettingsInput.decodetype = getString("base64")
+            formSettingsInput.encodetype = getString("string")
             formSettingsInput.xmlToJson = getString("json_to_xml")
 
+            formSettingsInput.minify = getString("minify")
+            formSettingsInput.indentation = "2"
+
+            formSettingsInput.xmlRootName = getString("")
+            formSettingsInput.xmlArrayName = getString("")
         }
 
         model.addAttribute("FormSettingsInput", formSettingsInput)
@@ -75,72 +61,103 @@ class IndexController {
             model.addAttribute("output", output)
         }
 
-        if(exception){
-            model.addAttribute("exception", true)
-            exception = false
-        }
-
-        println("get index")
+        //println("get index")
         return "index" //view
     }
 
-    @PostMapping("/minify")
-    fun minify(
+    @PostMapping("/")
+    fun onFormSubmit(
         @ModelAttribute("FormSettingsInput")
         formSettingsInput: FormSettingsInput,
         model: Model
     ): String {
         val src = formSettingsInput.content ?: ""
 
+        //println(formSettingsInput)
         val res = when(formSettingsInput.setting){
-            getString("minify") -> {
-                jsonFormatter?.minify(src)
-            }
-            getString("beautify") -> {
-                val indent = formSettingsInput.indentation?.toInt() ?: -1
-                //println(indent)
-                jsonFormatter?.prettify(src, indent)
+            getString("formatter") -> {
+                when(formSettingsInput.minify){
+                    getString("minify") -> {
+                        val res = formatter.minify(src)
+                        if(res == null) model.addAttribute("exception_message", getString("exception_message_invalid_json"))
+                        res
+                    }
+                    getString("beautify") -> {
+                        val indent = formSettingsInput.indentation?.toInt() ?: -1
+                        val res = formatter.beautify(src, indent)
+                        if(res == null) model.addAttribute("exception_message", getString("exception_message_invalid_json"))
+                        res
+                    }
+                    else -> {
+                        null
+                    }
+                }
             }
             getString("xml") -> {
                 val indent = formSettingsInput.indentation?.toInt() ?: -1
 
                 when(formSettingsInput.xmlToJson){
                     getString("xml_to_json") -> {
-                        jsonFormatter?.xmlToJson(src, indent)
+                        val res = formatter.xmlToJson(src, indent)
+                        if(res == null) model.addAttribute("exception_message", getString("exception_message_invalid_xml"))
+                        res
                     }
                     getString("json_to_xml") -> {
-                        jsonFormatter?.jsonToXml(src, indent, "a")
+                        var xmlRootName = formSettingsInput.xmlRootName
+                        if(xmlRootName.isNullOrEmpty()) xmlRootName = null
+                        var xmlArrayName = formSettingsInput.xmlArrayName
+                        if(xmlArrayName.isNullOrEmpty()) xmlArrayName = null
+                        val res = formatter.jsonToXml(src, indent, xmlRootName, xmlArrayName)
+                        if(res == null) model.addAttribute("exception_message", getString("exception_message_invalid_json"))
+                        res
                     }
-                    else -> {
-                        null
-                    }
+                    else -> null
                 }
             }
-            getString("base64") -> {
-                when (formSettingsInput.encode) {
-                    getString("encode") -> {
-                        jsonFormatter?.encodeBase64(src)
-                    }
-                    getString("decode") -> {
-                        jsonFormatter?.decodeBase64(src)
-                    }
-                    else -> {
-                        null
-                    }
+            getString("encode_decode") -> {
+                val from = getType(formSettingsInput.encodetype)
+                val to = getType(formSettingsInput.decodetype)
+                if(from == to){
+                    src
+                } else if(from == null || to == null){
+                    null
+                } else {
+                    formatter.convert(src, from, to)
                 }
             }
             else -> ""
         }
+        this.formSettingsInput = formSettingsInput
+
         if(res == null){
             output = ""
-            exception = true
+            model.addAttribute("exception", true)
+            addAllStrings(model)
+            return "index"
         } else {
             output = res
         }
-        this.formSettingsInput = formSettingsInput
 
         //println("post index | $formSettingsInput")
         return "redirect:/"//"redirect:/"
+    }
+
+    private fun getType(type: String?): Encode?{
+        return when(type) {
+            getString("string") -> Encode.STRING
+            getString("base64") -> Encode.BASE64
+            getString("binary") -> Encode.BINARY
+            getString("hex") -> Encode.HEX
+            else -> null
+        }
+    }
+
+    private fun addAllStrings(model: Model){
+        strings?.apply {
+            for(s in this){
+                addString(model, s.key)
+            }
+        }
     }
 
     private fun addString(model: Model, key: String){

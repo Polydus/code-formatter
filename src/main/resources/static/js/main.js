@@ -1,41 +1,62 @@
-/*var collapse0 = document.getElementById('collapse0');
-var collapse1 = document.getElementById('collapse1');
-var collapse2 = document.getElementById('collapse2');
+var optionsContainer = document.getElementById('form-options');
 
-var bsCollapse0 = new bootstrap.Collapse(collapse0, {
-  toggle: false
-})
-var bsCollapse1 = new bootstrap.Collapse(collapse1, {
-  toggle: false
-})
-var bsCollapse2 = new bootstrap.Collapse(collapse2, {
-  toggle: false
-})*/
+var classNames = ['formatter-form-options', 'xml-form-options', 'encode-form-options'];
 
 var selects = [
 document.getElementById('setting-select-0'),
 document.getElementById('setting-select-1'),
-document.getElementById('setting-select-2'),
-document.getElementById('setting-select-3')
+document.getElementById('setting-select-2')
 ];
-
-var formOptions = [
-document.getElementById('minify-form-options'),
-document.getElementById('beautify-form-options'),
-document.getElementById('xml-form-options'),
-document.getElementById('base64-form-options')
+var selectsLabels = [
+document.getElementById('setting-select-label-0'),
+document.getElementById('setting-select-label-1'),
+document.getElementById('setting-select-label-2')
 ];
 
 var classes = [];
-classes = classes.concat(Array.from(document.getElementsByClassName('minify-form-options')));
-classes = classes.concat(Array.from(document.getElementsByClassName('beautify-form-options')));
-classes = classes.concat(Array.from(document.getElementsByClassName('xml-form-options')));
-classes = classes.concat(Array.from(document.getElementsByClassName('base64-form-options')));
+classes = classes.concat(Array.from(document.getElementsByClassName(classNames[0])));
+classes = classes.concat(Array.from(document.getElementsByClassName(classNames[1])));
+classes = classes.concat(Array.from(document.getElementsByClassName(classNames[2])));
 
-console.log(classes.length);
-classes = getUniques(classes);
-console.log(classes.length);
+var indentSelect = document.getElementById('indent-select-container');
+var minifyRadio0 = document.getElementById('minify-radio-0');
+var minifyRadio1 = document.getElementById('minify-radio-1');
 
+function showIndent(show){
+    if(show){
+        indentSelect.style.display = 'flex';
+    } else {
+        indentSelect.style.display = 'none';
+    }
+}
+
+minifyRadio0.addEventListener('click',function (){
+    beautify = false;
+    showIndent(beautify);
+});
+
+minifyRadio1.addEventListener('click',function (){
+    beautify = true;
+    showIndent(beautify);
+});
+
+selects[0].addEventListener('click',function (){
+    showFormOptions(classNames[0]);
+    optionsContainer.classList.add('noradius-left');
+    setActive(0);
+    showIndent(beautify);
+});
+selects[1].addEventListener('click',function (){
+    showFormOptions(classNames[1]);
+    optionsContainer.classList.remove('noradius-left');
+    setActive(1);
+    showIndent(true);
+});
+selects[2].addEventListener('click',function (){
+    showFormOptions(classNames[2]);
+    optionsContainer.classList.remove('noradius-left');
+    setActive(2);
+});
 
 function getUniques(array){
     var res = [];
@@ -55,26 +76,38 @@ function showFormOptions(c){
     }
 }
 
-selects[0].onclick = function(){
-showFormOptions('minify-form-options');
+
+function setActive(index){
+    for(var i = 0; i < selectsLabels.length; i++){
+        if(i === index){
+            selectsLabels[i].classList.add('top-button-active');
+        } else {
+            selectsLabels[i].classList.remove('top-button-active');
+        }
+    }
 }
-selects[1].onclick = function(){
-showFormOptions('beautify-form-options');
-}
-selects[2].onclick = function(){
-showFormOptions('xml-form-options');
-}
-selects[3].onclick = function(){
-showFormOptions('base64-form-options');
-}
+
+$(selects[0]).hover(
+    function(){
+        optionsContainer.classList.add('noradius-left');
+    },
+    function(){
+    if(!selects[0].classList.contains('active')){
+        optionsContainer.classList.remove('noradius-left');
+    }
+});
 
 
 window.onload = function() {
     //console.log(obj);
     console.log('output: ' + output);
-    if(obfuscate && output != ''){
-        var outputArea = document.getElementById('output-area');
-        outputArea.innerHTML = output;
+    console.log(formSettings);
+
+    showIndent(beautify);
+
+    if(output != ''){
+        document.getElementById('output-area').innerHTML = output;
+        document.getElementById('output-area-container').scrollIntoView();
     } else {
         //val outputArea = document.getElementById('output-area');
         //outputArea.innerHTML = content;
@@ -82,18 +115,5 @@ window.onload = function() {
 };
 
 
-/*
-collapse0.addEventListener('show.bs.collapse', function () {
-    bsCollapse1.hide();
-    bsCollapse2.hide();
-})
 
-collapse1.addEventListener('show.bs.collapse', function () {
-    bsCollapse0.hide();
-    bsCollapse2.hide();
-})
-collapse2.addEventListener('show.bs.collapse', function () {
-    bsCollapse0.hide();
-    bsCollapse1.hide();
-})
-*/
+
