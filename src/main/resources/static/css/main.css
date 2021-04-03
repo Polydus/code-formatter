@@ -156,8 +156,12 @@ p, ul, li {
     min-width: 100%;
 }
 
-.min-width-400px{
-    min-width: 400px;
+.min-width-300px{
+    min-width: 300px;
+}
+
+.row-justify-center{
+    justify-content: center;
 }
 
 #polydus-copyright {
