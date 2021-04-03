@@ -7,6 +7,10 @@ body {
   background-color: #eeeeee;
 }
 
+p, ul, li {
+    font-weight: 300;
+}
+
 .title-container{
     margin: 1rem 0;
 }
