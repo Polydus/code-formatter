@@ -155,6 +155,10 @@ p, ul, li {
     font-size: 1.5rem;
 }
 
+.min-width-400px{
+    min-width: 400px;
+}
+
 #polydus-copyright {
     width: 100%;
 }
