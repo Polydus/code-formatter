@@ -153,6 +153,7 @@ p, ul, li {
     background-color: #424242;
     border-top: 0px solid #795548;
     font-size: 1.5rem;
+    min-width: 100%;
 }
 
 .min-width-400px{
