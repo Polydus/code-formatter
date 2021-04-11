@@ -36,13 +36,13 @@ class Formatter() {
     }
 
 
-    private val xmlPrettyPrinters = Array<DefaultXmlPrettyPrinter>(Indent.values().size){
+    /*private val xmlPrettyPrinters = Array<DefaultXmlPrettyPrinter>(Indent.values().size){
         val indenter = XmlIndenter(Indent.values()[it])//DefaultIndenter(Indent.values()[it].value, DefaultIndenter.SYS_LF)
         DefaultXmlPrettyPrinter().apply {
             indentArraysWith(indenter)
             indentObjectsWith(indenter)
         }
-    }
+    }*/
 
     private val jsonWriters = Array<ObjectWriter>(Indent.values().size){
         ObjectMapper().setDefaultPrettyPrinter(jsonPrettyPrinters[it]).writerWithDefaultPrettyPrinter()
@@ -52,7 +52,8 @@ class Formatter() {
 
     private val xmlMapper = XmlMapper()
     //private val xmlWriter = xmlMapper.writer().withRootName("asdf")
-    private val xmlWriterNoRoot = xmlMapper.writer()
+    private val xmlWriterNoRoot = xmlMapper.writer().withRootName("root")
+
 
     init {
         xmlMapper.apply{
@@ -180,14 +181,16 @@ class Formatter() {
 
     fun jsonToXml(src: String, indent: Int, rootName: String?, objectsName: String?): String?{
         val thisIndent = Indent.values()[indent.coerceIn(0, Indent.values().size - 1)]
-        xmlMapper.setDefaultPrettyPrinter(xmlPrettyPrinters[thisIndent.ordinal])
+        //xmlMapper.setDefaultPrettyPrinter(xmlPrettyPrinters[thisIndent.ordinal])
 
-        val xmlWriter = getXmlWriter(objectsName)
+        val xmlWriter = getXmlWriter(rootName)
         val stringWriter = StringWriter()
 
         var res = jsonToXmlAsArray(stringWriter, src, xmlWriter)
-        if(res != null) return prettyPrintXml(res, thisIndent.ordinal, rootName, stringWriter)
-
+        if(res != null){
+            println("json to xml as array")
+            return prettyPrintXml(res, thisIndent.ordinal, rootName, stringWriter)
+        }
 
         return try {
             val obj = jsonMapper.readTree(src)
@@ -196,7 +199,7 @@ class Formatter() {
 
             res = stringWriter.toString()
 
-            prettyPrintXml(res, thisIndent.ordinal, rootName, stringWriter)
+            prettyPrintXml(res, thisIndent.ordinal, null, stringWriter)
         } catch (e: Exception){
             stringWriter.buffer.setLength(0)
             null
@@ -234,7 +237,8 @@ class Formatter() {
             if(rootName != null){
                 res += "<${rootName}>\n$src</${rootName}>"
             } else {
-                res += "<root>\n$src</root>"
+                res += "$src"
+                //res += "<root>\n$src</root>"
             }
             println(res)
 

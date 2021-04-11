@@ -34,7 +34,10 @@ dependencies {
 	implementation("org.webjars:bootstrap:5.0.0-beta2")
 	implementation("org.webjars:jquery:3.6.0")
 
-	//jackson
+	//validation
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
+	// jackson
 	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.4")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

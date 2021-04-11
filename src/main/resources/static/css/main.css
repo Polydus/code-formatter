@@ -1,10 +1,13 @@
-
+html {
+    height: 100%;
+}
 
 body {
    font-family: Roboto, -apple-system,BlinkMacSystemFont, "Segoe UI",Roboto,
     "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   text-shadow: 0px 1px rgba(33, 33, 33, 0.1);
   background-color: #eeeeee;
+  min-height: 100%;
 }
 
 p, ul, li {
@@ -13,6 +16,11 @@ p, ul, li {
 
 .title-container{
     margin: 1rem 0;
+}
+
+.blog-header {
+    background-color: #2196F3;
+    padding: 0.1rem;
 }
 
 .submit-button-container{
@@ -154,6 +162,11 @@ p, ul, li {
     border-top: 0px solid #795548;
     font-size: 1.5rem;
     min-width: 100%;
+    margin-top: auto!important;
+}
+
+.nomargin {
+    margin: 0;
 }
 
 .min-width-300px{

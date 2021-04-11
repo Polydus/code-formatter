@@ -19,6 +19,10 @@
     <div class="container form-options-container" id="form-options" th:classappend="${FormSettingsInput.setting == formatter} ? 'noradius-left' : ''">
 
 
+        <div class="row">
+            <p id="description"></p>
+        </div>
+
 
         <div class="form-options formatter-form-options"
              th:styleappend="${FormSettingsInput.setting == formatter} ? 'display:block' : 'display:none'">
@@ -69,14 +73,14 @@
 
                 <div class="col-sm-10">
                     <div class="form-check col-md-auto form-check-inline">
-                        <input class="form-check-input" type="radio" id="inlineRadio3"
+                        <input class="form-check-input" type="radio" id="xmlToJson-radio-0"
                                th:field="*{xmlToJson}" th:value="${json_to_xml}" >
-                        <label class="form-check-label" for="inlineRadio3" th:text="${json_to_xml}"></label>
+                        <label class="form-check-label" for="xmlToJson-radio-0" th:text="${json_to_xml}"></label>
                     </div>
                     <div class="form-check col-md-auto form-check-inline">
-                        <input class="form-check-input" type="radio" id="inlineRadio4"
+                        <input class="form-check-input" type="radio" id="xmlToJson-radio-1"
                                th:field="*{xmlToJson}" th:value="${xml_to_json}" >
-                        <label class="form-check-label" for="inlineRadio4" th:text="${xml_to_json}"></label>
+                        <label class="form-check-label" for="xmlToJson-radio-1" th:text="${xml_to_json}"></label>
                     </div>
                 </div>
 
@@ -84,18 +88,18 @@
             </div>
 
 
-            <div class="row">
+            <div class="row" id="xmlroot-select-container">
                 <label for="xmlRootName" class="col-sm-2 col-form-label" th:text="${xml_root_name}"></label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="xmlRootName" th:field="*{xmlRootName}">
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <label for="xmlArrayName" class="col-sm-2 col-form-label" th:text="${json_array_name}"></label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="xmlArrayName" th:field="*{xmlArrayName}">
                 </div>
-            </div>
+            </div>-->
 
 
 

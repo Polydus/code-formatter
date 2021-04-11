@@ -1,6 +1,6 @@
 package com.polydus.codeformatter.model
 
-class FormSettingsInput {
+class FormSettingsInput() {
 
     var content: String? = null
     var setting: String? = null
@@ -8,7 +8,6 @@ class FormSettingsInput {
 
     var encodetype: String? = null
     var decodetype: String? = null
-    //var encode: String? = null
 
     var minify: String? = null
 

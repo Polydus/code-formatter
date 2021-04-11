@@ -34,6 +34,10 @@
   "input_label": "Input",
   "output_label": "Output",
 
+  "desc_json" : "Use this tool to format or minify your JSON by pasting your code in the text field below. It will also strip any comments. This won't work if your file has errors, so make sure that's not the case.",
+  "desc_xml" : "This tool lets you convert JSON to XML and vice versa.",
+  "desc_encode" : "Convert clear text to Base64, binary or hexadecimal. Converting to Binary/Hex turns the chars to the ascii value of each character.",
+
   "indentation_option_0": "None",
   "indentation_option_1": "1 space",
   "indentation_option_2": "2 spaces",

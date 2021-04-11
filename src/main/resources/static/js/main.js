@@ -22,11 +22,25 @@ var indentSelect = document.getElementById('indent-select-container');
 var minifyRadio0 = document.getElementById('minify-radio-0');
 var minifyRadio1 = document.getElementById('minify-radio-1');
 
+var xmlrootSelect = document.getElementById('xmlroot-select-container');
+var xmlToJsonRadio0 = document.getElementById('xmlToJson-radio-0');
+var xmlToJsonRadio1 = document.getElementById('xmlToJson-radio-1');
+
+var desc = document.getElementById('description');
+
 function showIndent(show){
     if(show){
         indentSelect.style.display = 'flex';
     } else {
         indentSelect.style.display = 'none';
+    }
+}
+
+function showXmlOptions(show){
+    if(show){
+        xmlrootSelect.style.display = 'flex';
+    } else {
+        xmlrootSelect.style.display = 'none';
     }
 }
 
@@ -40,6 +54,17 @@ minifyRadio1.addEventListener('click',function (){
     showIndent(beautify);
 });
 
+xmlToJsonRadio0.addEventListener('click',function (){
+    showXmlRootOption = true;
+    showXmlOptions(showXmlRootOption);
+});
+
+xmlToJsonRadio1.addEventListener('click',function (){
+    showXmlRootOption = false;
+    showXmlOptions(showXmlRootOption);
+});
+
+
 selects[0].addEventListener('click',function (){
     showFormOptions(classNames[0]);
     optionsContainer.classList.add('noradius-left');
@@ -51,6 +76,7 @@ selects[1].addEventListener('click',function (){
     optionsContainer.classList.remove('noradius-left');
     setActive(1);
     showIndent(true);
+    showXmlOptions(showXmlRootOption);
 });
 selects[2].addEventListener('click',function (){
     showFormOptions(classNames[2]);
@@ -85,6 +111,8 @@ function setActive(index){
             selectsLabels[i].classList.remove('top-button-active');
         }
     }
+
+    desc.innerHTML = descs[index];
 }
 
 $(selects[0]).hover(
@@ -100,10 +128,21 @@ $(selects[0]).hover(
 
 window.onload = function() {
     //console.log(obj);
-    console.log('output: ' + output);
-    console.log(formSettings);
+    //console.log('output: ' + output);
+    //console.log(formSettings);
+    //console.log(beautify);
 
     showIndent(beautify);
+    showXmlOptions(showXmlRootOption);
+
+    for(var i = 0; i < selects.length; i++){
+        if(selects[i].checked){
+            desc.innerHTML = descs[i];
+            break;
+        }
+    }
+
+
 
     if(output != ''){
         document.getElementById('output-area').innerHTML = output;
