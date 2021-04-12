@@ -1,9 +1,9 @@
 # Code Formatter
 
-This project is now hosted here: [https://blooming-ocean-64275.herokuapp.com/](https://blooming-ocean-64275.herokuapp.com/)
+This project is now hosted here: [https://polydus.com/codeformatter](https://polydus.com/codeformatter)
 
 
-Code Formatter is a simple Spring web app that allow you to:
+Code Formatter is a simple Spring web app that allows you to:
 
 
 
