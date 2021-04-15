@@ -23,14 +23,15 @@ class IndexController {
     @Autowired
     private lateinit var strings: Strings
 
-    private var output: String? = null
+    //private var output: String? = null
    // private var exception = false
-    private var formSettingsInput = FormSettingsInput()
+    //private var formSettingsInput = FormSettingsInput()
 
     @GetMapping("/")
     fun main(model: Model): String {
         strings.addAllStringsToModel(model)
 
+        val formSettingsInput = FormSettingsInput()
         if(formSettingsInput.setting == null){
             formSettingsInput.setting = strings.getString("formatter")
             formSettingsInput.decodetype = strings.getString("base64")
@@ -46,9 +47,9 @@ class IndexController {
 
         model.addAttribute("FormSettingsInput", formSettingsInput)
         //model.addAttribute("output", "")
-        output?.apply {
+        /*output?.apply {
             model.addAttribute("output", output)
-        }
+        }*/
 
         //println("get index")
         return "index" //view
@@ -121,19 +122,21 @@ class IndexController {
             }
             else -> ""
         }
-        this.formSettingsInput = formSettingsInput
+
+        //this.formSettingsInput = formSettingsInput
+        strings.addAllStringsToModel(model)
 
         if(res == null){
-            output = ""
             model.addAttribute("exception", true)
-            strings.addAllStringsToModel(model)
-            return "index"
+            model.addAttribute("output", "")
         } else {
-            output = res
+            model.addAttribute("exception", false)
+            model.addAttribute("output", res)
         }
+        return "index"
 
         //println("post index | $formSettingsInput")
-        return "redirect:/"//"redirect:/"
+        //return "redirect:/"//"redirect:/"
     }
 
     private fun getType(type: String?): Encode?{
